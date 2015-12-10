@@ -46,3 +46,6 @@ buildtools/
 *.ldf
 Generated Files/
 AppPackages/
+*.opendb
+*.user
+/packages/
