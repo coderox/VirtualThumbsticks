@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+// Should this really be necessary?
+#define DIRECTX_NO_WFRECT
+
 #include <wrl.h>
 #include <wrl/client.h>
 #include <dxgi1_4.h>
