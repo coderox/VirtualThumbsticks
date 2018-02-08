@@ -5,6 +5,7 @@
 #include <Common\DirectXHelper.h>
 #include <VirtualThumbsticks.h>
 
+using namespace std;
 using namespace DirectX;
 using namespace Platform;
 using namespace DirectX::SimpleMath;
@@ -17,10 +18,10 @@ Ship::Ship() {
 
 }
 
-void Ship::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, String^ filename) {
+void Ship::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wstring filename) {
 	ComPtr<ID3D11Resource> res;
 	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), filename->Data(), res.ReleaseAndGetAddressOf(), mTexture.ReleaseAndGetAddressOf(), 0)
+		DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), filename.c_str(), res.ReleaseAndGetAddressOf(), mTexture.ReleaseAndGetAddressOf(), 0)
 		);
 	DX::GetTextureSize(res.Get(), &mTextureWidth, &mTextureHeight);
 }
@@ -36,7 +37,7 @@ EnemyShip::EnemyShip() : Ship() {
 
 }
 
-void EnemyShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, String^ filename) {
+void EnemyShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wstring filename) {
 	Ship::LoadContent(deviceResources, filename);
 
 	mRadius = sqrt(mTextureWidth * mTextureWidth + mTextureHeight * mTextureHeight) * 0.75;
@@ -68,7 +69,7 @@ PlayerShip::PlayerShip(Vector2 position)
 	mPosition.y = position.y;
 }
 
-void PlayerShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, Platform::String^ filename, Platform::String^ bulletFilename) {
+void PlayerShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wstring filename, wstring bulletFilename) {
 	Ship::LoadContent(deviceResources, filename);
 
 	mBulletModel.reset(new BulletModel());
@@ -88,7 +89,7 @@ void PlayerShip::ProcessInput(std::shared_ptr<IThumbsticks> thumbsticks) {
 				rightThumbstick.Normalize();
 				Vector2 bulletVelocity(rightThumbstick * mBulletSpeed);
 
-				Bullets.push_back(Bullet(mBulletModel.get(), mPosition, bulletVelocity, SimpleMath::Color(1.0, 0.0, 0.0)));
+				Bullets.push_back(Bullet(mBulletModel, mPosition, bulletVelocity, SimpleMath::Color(1.0, 0.0, 0.0)));
 
 				mFireTimer = mCooldown;
 			}

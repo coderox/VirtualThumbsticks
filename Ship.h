@@ -10,7 +10,7 @@ public:
 
 	Ship();
 	~Ship() {}
-	virtual void LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, Platform::String^ filename);
+	virtual void LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, std::wstring filename);
 	virtual bool ContainsPoint(DirectX::SimpleMath::Vector2 point) { return false; }
 	virtual void Update(DX::StepTimer const& timer) { mPosition += mVelocity; }
 	virtual void Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch);
@@ -44,11 +44,11 @@ protected:
 class EnemyShip : public Ship {
 public:
 	EnemyShip();
-	void LoadContent(std::shared_ptr<DX::DeviceResources>, Platform::String^ filename) override;
+	void LoadContent(std::shared_ptr<DX::DeviceResources>, std::wstring filename) override;
 	void Update(DX::StepTimer const& timer) override;
 	bool ContainsPoint(DirectX::SimpleMath::Vector2 point) override;
 
-	Ship* Player;
+	std::shared_ptr<Ship> Player;
 
 private:
 	float mRadius;
@@ -57,7 +57,7 @@ private:
 class PlayerShip : public Ship {
 public:
 	PlayerShip(DirectX::SimpleMath::Vector2 position);
-	void LoadContent(std::shared_ptr<DX::DeviceResources>, Platform::String^ filename, Platform::String^ bulletFilename);
+	void LoadContent(std::shared_ptr<DX::DeviceResources>, std::wstring filename, std::wstring bulletFilename);
 	void ProcessInput(std::shared_ptr<VirtualThumbsticksSandbox::IThumbsticks> thumbsticks);
 	void Update(DX::StepTimer const& timer) override;
 	void Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch) override;

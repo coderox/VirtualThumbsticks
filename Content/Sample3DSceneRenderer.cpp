@@ -59,7 +59,7 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	mPlayer.reset(new PlayerShip(DirectX::SimpleMath::Vector2(mGraphicsWidthHalf, mGraphicsHeightHalf)));
 	mPlayer->WorldHeight = mWorldHeight;
 	mPlayer->WorldWidth = mWorldWidth;
-	mPlayer->LoadContent(m_deviceResources, "Assets/player1.png", "Assets/bullet.png");
+	mPlayer->LoadContent(m_deviceResources, L"Assets/player1.png", L"Assets/bullet.png");
 
 	//mEnemy.reset(new EnemyShip());
 	//mEnemy->Player = mPlayer.get();
@@ -109,8 +109,8 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		int numToSpan = Random(1, 3);
 		for (int i = 0; i < numToSpan; i++) {
 			EnemyShip enemy;
-			enemy.Player = mPlayer.get();
-			enemy.LoadContent(m_deviceResources, "Assets/alien.png");
+			enemy.Player = mPlayer;
+			enemy.LoadContent(m_deviceResources, L"Assets/alien.png");
 
 			Vector2 position;
 			if (rand() % 2 == 0) {

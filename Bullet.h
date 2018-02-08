@@ -5,7 +5,7 @@ class BulletModel {
 public:
 	BulletModel();
 	~BulletModel();
-	void LoadContent(std::shared_ptr<DX::DeviceResources>& deviceResources, Platform::String^ filename);
+	void LoadContent(std::shared_ptr<DX::DeviceResources>& deviceResources, std::wstring filename);
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> Texture;
 	UINT TextureWidth = 0;
 	UINT TextureHeight = 0;
@@ -13,7 +13,8 @@ public:
 
 class Bullet {
 public:
-	Bullet(BulletModel* bulletModel, DirectX::SimpleMath::Vector2 pos, DirectX::SimpleMath::Vector2 vel, DirectX::SimpleMath::Color col);
+	Bullet(std::shared_ptr<BulletModel> bulletModel, DirectX::SimpleMath::Vector2 pos, DirectX::SimpleMath::Vector2 vel, DirectX::SimpleMath::Color col);
+	~Bullet();
 	void Update();
 	void Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch);
 
@@ -24,7 +25,7 @@ public:
 	DirectX::SimpleMath::Color GetColor() { return mColor; }
 
 private:
-	BulletModel* mBulletModel;
+	std::shared_ptr<BulletModel> mBulletModel;
 	float mRotation;
 	DirectX::SimpleMath::Vector2 mPosition;
 	DirectX::SimpleMath::Vector2 mVelocity;

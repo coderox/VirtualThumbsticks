@@ -4,6 +4,7 @@
 #include <Common\DirectXHelper.h>
 #include <WICTextureLoader.h>
 
+using namespace std;
 using namespace DX;
 using namespace DirectX;
 using namespace Platform;
@@ -18,23 +19,27 @@ BulletModel::~BulletModel() {
 
 }
 
-void BulletModel::LoadContent(std::shared_ptr<DeviceResources>& deviceResources, String^ filename) {
+void BulletModel::LoadContent(shared_ptr<DeviceResources>& deviceResources, wstring filename) {
 	ComPtr<ID3D11Resource> res;
 	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), filename->Data(), res.ReleaseAndGetAddressOf(), Texture.ReleaseAndGetAddressOf(), 0)
+		DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), filename.c_str(), res.ReleaseAndGetAddressOf(), Texture.ReleaseAndGetAddressOf(), 0)
 		);
 	DX::GetTextureSize(res.Get(), &TextureWidth, &TextureHeight);
 }
 
 /************************************************/
 
-Bullet::Bullet(BulletModel* bulletModel, Vector2 pos, Vector2 vel, SimpleMath::Color col)
+Bullet::Bullet(shared_ptr<BulletModel> bulletModel, Vector2 pos, Vector2 vel, SimpleMath::Color col)
 	: mBulletModel(bulletModel)
 	, mPosition(pos)
 	, mVelocity(vel)
 	, mColor(col)
 {
 	mRotation = atan2(vel.y, vel.x);
+}
+
+Bullet::~Bullet() {
+	OutputDebugString(L"Bullet destructor");
 }
 
 void Bullet::Update() {
