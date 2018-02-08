@@ -2,22 +2,23 @@
 #include "VirtualThumbsticksSandboxMain.h"
 #include "Common\DirectXHelper.h"
 
+using namespace std;
 using namespace VirtualThumbsticksSandbox;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
 using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
-VirtualThumbsticksSandboxMain::VirtualThumbsticksSandboxMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
+VirtualThumbsticksSandboxMain::VirtualThumbsticksSandboxMain(const shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
 {
 	// Register to be notified if the Device is lost or recreated
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: Replace this with your app's content initialization.
-	m_sceneRenderer = std::unique_ptr<Sample3DSceneRenderer>(new Sample3DSceneRenderer(m_deviceResources));
+	m_sceneRenderer = make_unique<Sample3DSceneRenderer>(m_deviceResources);
 
-	m_fpsTextRenderer = std::unique_ptr<SampleFpsTextRenderer>(new SampleFpsTextRenderer(m_deviceResources));
+	m_fpsTextRenderer = make_unique<SampleFpsTextRenderer>(m_deviceResources);
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
@@ -142,6 +143,6 @@ void VirtualThumbsticksSandboxMain::OnDeviceRestored()
 	CreateWindowSizeDependentResources();
 }
 
-void VirtualThumbsticksSandboxMain::QueueEvent(std::shared_ptr<InputEvent>& event) {
+void VirtualThumbsticksSandboxMain::QueueEvent(shared_ptr<InputEvent>& event) {
 	m_sceneRenderer->QueueEvent(event);
 }
