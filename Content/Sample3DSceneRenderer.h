@@ -39,8 +39,8 @@ namespace VirtualThumbsticksSandbox
 		int mNumStars;
 		int mWorldWidth;
 		int mWorldHeight;
-		int mGraphicsWidthHalf;
-		int mGraphicsHeightHalf;
+		float mGraphicsWidthHalf;
+		float mGraphicsHeightHalf;
 		int mWorldBorderThickness;
 		int mWorldBorderThicknessDoubled;
 		UINT mThumbstickTextureWidth;
@@ -49,7 +49,7 @@ namespace VirtualThumbsticksSandbox
 		std::shared_ptr<PlayerShip> mPlayer;
 		//std::shared_ptr<EnemyShip> mEnemy;
 		std::shared_ptr<DirectX::SpriteBatch> mSpriteBatch;
-		std::shared_ptr<VirtualThumbsticksSandbox::VirtualThumbsticks> mThumbsticks;
+		std::unique_ptr<VirtualThumbsticksSandbox::VirtualThumbsticks> mThumbsticks;
 		std::vector<DirectX::SimpleMath::Vector3> mStars;
 		std::vector<EnemyShip> mEnemies;
 

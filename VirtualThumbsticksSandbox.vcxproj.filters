@@ -101,6 +101,9 @@
     <ClInclude Include="InputEvent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="IThumbsticks.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">

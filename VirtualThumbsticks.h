@@ -1,15 +1,9 @@
 #pragma once
-#include <SimpleMath.h>
+#include "IThumbsticks.h"
 #include <InputEvent.h>
 #include <concurrent_queue.h>
 
 namespace VirtualThumbsticksSandbox {
-
-	class IThumbsticks {
-	public:
-		virtual DirectX::SimpleMath::Vector2 GetLeftThumbstick() = 0;
-		virtual DirectX::SimpleMath::Vector2 GetRightThumbstick() = 0;
-	};
 
 	class VirtualThumbsticks : public IThumbsticks {
 	public:

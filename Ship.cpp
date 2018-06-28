@@ -76,7 +76,7 @@ void PlayerShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResource
 	mBulletModel->LoadContent(deviceResources, bulletFilename);
 }
 
-void PlayerShip::ProcessInput(std::shared_ptr<IThumbsticks> thumbsticks) {
+void PlayerShip::ProcessInput(IThumbsticks* thumbsticks) {
 	if (thumbsticks) {
 		auto leftThumbstick = thumbsticks->GetLeftThumbstick();
 		auto rightThumbstick = thumbsticks->GetRightThumbstick();

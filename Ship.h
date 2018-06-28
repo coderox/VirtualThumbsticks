@@ -58,7 +58,7 @@ class PlayerShip : public Ship {
 public:
 	PlayerShip(DirectX::SimpleMath::Vector2 position);
 	void LoadContent(std::shared_ptr<DX::DeviceResources>, std::wstring filename, std::wstring bulletFilename);
-	void ProcessInput(std::shared_ptr<VirtualThumbsticksSandbox::IThumbsticks> thumbsticks);
+	void ProcessInput(VirtualThumbsticksSandbox::IThumbsticks* thumbsticks);
 	void Update(DX::StepTimer const& timer) override;
 	void Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch) override;
 

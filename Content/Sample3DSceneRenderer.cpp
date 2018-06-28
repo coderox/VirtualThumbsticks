@@ -53,10 +53,10 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	mSpriteBatch.reset(new SpriteBatch(m_deviceResources->GetD3DDeviceContext()));
 
 	auto screenViewport = m_deviceResources->GetScreenViewport();
-	mGraphicsWidthHalf = outputSize.Width / 2.0;
-	mGraphicsHeightHalf = outputSize.Height / 2.0;
+	mGraphicsWidthHalf = outputSize.Width / 2.0f;
+	mGraphicsHeightHalf = outputSize.Height / 2.0f;
 
-	mPlayer.reset(new PlayerShip(DirectX::SimpleMath::Vector2(mGraphicsWidthHalf, mGraphicsHeightHalf)));
+	mPlayer = std::make_shared<PlayerShip>(DirectX::SimpleMath::Vector2(mGraphicsWidthHalf, mGraphicsHeightHalf));
 	mPlayer->WorldHeight = mWorldHeight;
 	mPlayer->WorldWidth = mWorldWidth;
 	mPlayer->LoadContent(m_deviceResources, L"Assets/player1.png", L"Assets/bullet.png");
@@ -65,9 +65,9 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	//mEnemy->Player = mPlayer.get();
 	//mEnemy->LoadContent(m_deviceResources, "Assets/alien.png");
 
-	mThumbsticks.reset(new VirtualThumbsticksSandbox::VirtualThumbsticks());
-	mThumbsticks->DisplayHeight = screenViewport.Height;
-	mThumbsticks->DisplayWidth = screenViewport.Width;
+	mThumbsticks = std::make_unique<VirtualThumbsticks>();
+	mThumbsticks->DisplayHeight = static_cast<int>(screenViewport.Height);
+	mThumbsticks->DisplayWidth = static_cast<int>(screenViewport.Width);
 
 	DX::ThrowIfFailed(
 		DirectX::CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/blank.png", nullptr, mBlankTexture.ReleaseAndGetAddressOf(), 0)
@@ -81,18 +81,22 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
 	mStars.clear();
 	for (int i = 0; i < mNumStars; i++) {
-		float random = RandomNextDouble();
-		float x = random  * (mWorldWidth + outputSize.Width) - (mWorldWidth / 2.0 + mGraphicsWidthHalf);
+		auto random = RandomNextDouble();
+		auto x = random  * (mWorldWidth + outputSize.Width) - (mWorldWidth / 2.0 + mGraphicsWidthHalf);
 		random = RandomNextDouble();
-		float y = random * (mWorldHeight + outputSize.Height) - (mWorldHeight / 2.0 + mGraphicsHeightHalf);
-		float z = Random(1, 3);
-		mStars.push_back(Vector3(x,y,z));
+		auto y = random * (mWorldHeight + outputSize.Height) - (mWorldHeight / 2.0 + mGraphicsHeightHalf);
+		auto z = Random(1, 3);
+		mStars.push_back(Vector3(
+			static_cast<float>(x), 
+			static_cast<float>(y), 
+			static_cast<float>(z))
+		);
 	}
 }
 
 void Sample3DSceneRenderer::ProcessInput() {
 	mThumbsticks->Update();
-	mPlayer->ProcessInput(mThumbsticks);
+	mPlayer->ProcessInput(mThumbsticks.get());
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -106,22 +110,22 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 
 	mSpawnTimer -= timer.GetElapsedSeconds() * 1000;
 	if (mSpawnTimer <= 0) {
-		int numToSpan = Random(1, 3);
-		for (int i = 0; i < numToSpan; i++) {
+		unsigned int numToSpan = static_cast<unsigned int>(Random(1, 3));
+		for (unsigned int i = 0; i < numToSpan; i++) {
 			EnemyShip enemy;
 			enemy.Player = mPlayer;
 			enemy.LoadContent(m_deviceResources, L"Assets/alien.png");
 
 			Vector2 position;
 			if (rand() % 2 == 0) {
-				position.x = -mWorldWidth / 2.0 - (mGraphicsWidthHalf + 10);
+				position.x = static_cast<float>(-mWorldWidth / 2.0 - (mGraphicsWidthHalf + 10));
 			} else {
-				position.x = mWorldWidth / 2.0 + (mGraphicsWidthHalf + 10);
+				position.x = static_cast<float>(mWorldWidth / 2.0 + (mGraphicsWidthHalf + 10));
 			}
 			if (rand() % 2 == 0) {
-				position.y = -mWorldHeight / 2.0 - (mGraphicsHeightHalf + 10);
+				position.y = static_cast<float>(-mWorldHeight / 2.0 - (mGraphicsHeightHalf + 10));
 			} else {
-				position.y = mWorldHeight / 2.0 + (mGraphicsHeightHalf + 10);
+				position.y = static_cast<float>(mWorldHeight / 2.0 + (mGraphicsHeightHalf + 10));
 			}
 			enemy.SetPosition(position);
 			mEnemies.push_back(enemy);
@@ -175,7 +179,10 @@ void Sample3DSceneRenderer::Render()
 		return;
 	}
 	auto viewport = m_deviceResources->GetScreenViewport();
-	Matrix cameraTransform(Matrix::CreateTranslation(-mPlayer->GetPosition().x + viewport.Width/2.0, -mPlayer->GetPosition().y + viewport.Height/2.0, 0.0));
+	Matrix cameraTransform(Matrix::CreateTranslation(
+		static_cast<float>(-mPlayer->GetPosition().x + viewport.Width/2.0),
+		static_cast<float>(-mPlayer->GetPosition().y + viewport.Height/2.0),
+		0.0f));
 	mSpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, nullptr, nullptr, nullptr, nullptr, nullptr, cameraTransform);
 
 	for (auto star : mStars)
@@ -199,13 +206,13 @@ void Sample3DSceneRenderer::Render()
 
 	auto leftThumbstick = mThumbsticks->GetLeftThumbstickCenter();
 	if (leftThumbstick != Vector2::Zero) {
-		Vector2 position(leftThumbstick - Vector2(mThumbstickTextureWidth / 2.0, mThumbstickTextureHeight / 2.0));
+		Vector2 position(leftThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f));
 		mSpriteBatch->Draw(mThumbstickTexture.Get(), position, Colors::Green);
 	}
 
 	auto rightThumbstick = mThumbsticks->GetRightThumbstickCenter();
 	if (rightThumbstick != Vector2::Zero) {
-		mSpriteBatch->Draw(mThumbstickTexture.Get(), rightThumbstick - Vector2(mThumbstickTextureWidth / 2.0, mThumbstickTextureHeight / 2.0), Colors::Blue);
+		mSpriteBatch->Draw(mThumbstickTexture.Get(), rightThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f), Colors::Blue);
 	}
 
 	mSpriteBatch->End();
