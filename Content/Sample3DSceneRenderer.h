@@ -39,8 +39,8 @@ namespace VirtualThumbsticksSandbox
 		int mNumStars;
 		int mWorldWidth;
 		int mWorldHeight;
-		int mGraphicsWidthHalf;
-		int mGraphicsHeightHalf;
+		float mGraphicsWidthHalf;
+		float mGraphicsHeightHalf;
 		int mWorldBorderThickness;
 		int mWorldBorderThicknessDoubled;
 		UINT mThumbstickTextureWidth;

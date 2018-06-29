@@ -53,8 +53,8 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	mSpriteBatch.reset(new SpriteBatch(m_deviceResources->GetD3DDeviceContext()));
 
 	auto screenViewport = m_deviceResources->GetScreenViewport();
-	mGraphicsWidthHalf = outputSize.Width / 2.0;
-	mGraphicsHeightHalf = outputSize.Height / 2.0;
+	mGraphicsWidthHalf = outputSize.Width / 2.0f;
+	mGraphicsHeightHalf = outputSize.Height / 2.0f;
 
 	mPlayer.reset(new PlayerShip(DirectX::SimpleMath::Vector2(mGraphicsWidthHalf, mGraphicsHeightHalf)));
 	mPlayer->WorldHeight = mWorldHeight;
@@ -66,8 +66,8 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	//mEnemy->LoadContent(m_deviceResources, "Assets/alien.png");
 
 	mThumbsticks.reset(new VirtualThumbsticksSandbox::VirtualThumbsticks());
-	mThumbsticks->DisplayHeight = screenViewport.Height;
-	mThumbsticks->DisplayWidth = screenViewport.Width;
+	mThumbsticks->DisplayHeight = static_cast<int>(screenViewport.Height);
+	mThumbsticks->DisplayWidth = static_cast<int>(screenViewport.Width);
 
 	DX::ThrowIfFailed(
 		DirectX::CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/blank.png", nullptr, mBlankTexture.ReleaseAndGetAddressOf(), 0)
@@ -81,11 +81,11 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
 	mStars.clear();
 	for (int i = 0; i < mNumStars; i++) {
-		float random = RandomNextDouble();
-		float x = random  * (mWorldWidth + outputSize.Width) - (mWorldWidth / 2.0 + mGraphicsWidthHalf);
-		random = RandomNextDouble();
-		float y = random * (mWorldHeight + outputSize.Height) - (mWorldHeight / 2.0 + mGraphicsHeightHalf);
-		float z = Random(1, 3);
+		float random = static_cast<float>(RandomNextDouble());
+		float x = random  * (mWorldWidth + outputSize.Width) - (mWorldWidth / 2.0f + mGraphicsWidthHalf);
+		random = static_cast<float>(RandomNextDouble());
+		float y = random * (mWorldHeight + outputSize.Height) - (mWorldHeight / 2.0f + mGraphicsHeightHalf);
+		float z = static_cast<float>(Random(1, 3));
 		mStars.push_back(Vector3(x,y,z));
 	}
 }
@@ -106,7 +106,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 
 	mSpawnTimer -= timer.GetElapsedSeconds() * 1000;
 	if (mSpawnTimer <= 0) {
-		int numToSpan = Random(1, 3);
+		int numToSpan = static_cast<int>(Random(1, 3));
 		for (int i = 0; i < numToSpan; i++) {
 			EnemyShip enemy;
 			enemy.Player = mPlayer;
@@ -114,14 +114,14 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 
 			Vector2 position;
 			if (rand() % 2 == 0) {
-				position.x = -mWorldWidth / 2.0 - (mGraphicsWidthHalf + 10);
+				position.x = -mWorldWidth / 2.0f - (mGraphicsWidthHalf + 10);
 			} else {
-				position.x = mWorldWidth / 2.0 + (mGraphicsWidthHalf + 10);
+				position.x = mWorldWidth / 2.0f + (mGraphicsWidthHalf + 10);
 			}
 			if (rand() % 2 == 0) {
-				position.y = -mWorldHeight / 2.0 - (mGraphicsHeightHalf + 10);
+				position.y = -mWorldHeight / 2.0f - (mGraphicsHeightHalf + 10);
 			} else {
-				position.y = mWorldHeight / 2.0 + (mGraphicsHeightHalf + 10);
+				position.y = mWorldHeight / 2.0f + (mGraphicsHeightHalf + 10);
 			}
 			enemy.SetPosition(position);
 			mEnemies.push_back(enemy);
@@ -175,7 +175,7 @@ void Sample3DSceneRenderer::Render()
 		return;
 	}
 	auto viewport = m_deviceResources->GetScreenViewport();
-	Matrix cameraTransform(Matrix::CreateTranslation(-mPlayer->GetPosition().x + viewport.Width/2.0, -mPlayer->GetPosition().y + viewport.Height/2.0, 0.0));
+	Matrix cameraTransform(Matrix::CreateTranslation(-mPlayer->GetPosition().x + viewport.Width/2.0f, -mPlayer->GetPosition().y + viewport.Height/2.0f, 0.0f));
 	mSpriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, nullptr, nullptr, nullptr, nullptr, nullptr, cameraTransform);
 
 	for (auto star : mStars)
@@ -199,13 +199,13 @@ void Sample3DSceneRenderer::Render()
 
 	auto leftThumbstick = mThumbsticks->GetLeftThumbstickCenter();
 	if (leftThumbstick != Vector2::Zero) {
-		Vector2 position(leftThumbstick - Vector2(mThumbstickTextureWidth / 2.0, mThumbstickTextureHeight / 2.0));
+		Vector2 position(leftThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f));
 		mSpriteBatch->Draw(mThumbstickTexture.Get(), position, Colors::Green);
 	}
 
 	auto rightThumbstick = mThumbsticks->GetRightThumbstickCenter();
 	if (rightThumbstick != Vector2::Zero) {
-		mSpriteBatch->Draw(mThumbstickTexture.Get(), rightThumbstick - Vector2(mThumbstickTextureWidth / 2.0, mThumbstickTextureHeight / 2.0), Colors::Blue);
+		mSpriteBatch->Draw(mThumbstickTexture.Get(), rightThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f), Colors::Blue);
 	}
 
 	mSpriteBatch->End();
