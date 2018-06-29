@@ -22,6 +22,7 @@
 #include <SpriteBatch.h>
 #include <SimpleMath.h>
 #include <Common\DirectXHelper.h>
+#include "WICTextureLoader.h"
 
 #include "Ship.h"
 #include "Bullet.h"

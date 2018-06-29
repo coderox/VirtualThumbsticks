@@ -28,7 +28,7 @@ void Ship::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wst
 
 void Ship::Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch) {
 	spriteBatch->Draw(mTexture.Get(), mPosition, nullptr, DirectX::Colors::White, mRotation,
-		Vector2(mTextureWidth / 2.0, mTextureHeight / 2.0), 1.0, SpriteEffects::SpriteEffects_None, 0.0);
+		Vector2(mTextureWidth / 2.0f, mTextureHeight / 2.0f), 1.0, SpriteEffects::SpriteEffects_None, 0.0);
 }
 
 /*********************************************************/
@@ -40,7 +40,7 @@ EnemyShip::EnemyShip() : Ship() {
 void EnemyShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wstring filename) {
 	Ship::LoadContent(deviceResources, filename);
 
-	mRadius = sqrt(mTextureWidth * mTextureWidth + mTextureHeight * mTextureHeight) * 0.75;
+	mRadius = static_cast<float>(sqrt(mTextureWidth * mTextureWidth + mTextureHeight * mTextureHeight) * 0.75f);
 }
 
 void EnemyShip::Update(DX::StepTimer const& timer) {
@@ -99,7 +99,7 @@ void PlayerShip::ProcessInput(IThumbsticks* thumbsticks) {
 	}
 
 	mPosition += mVelocity;
-	mVelocity *= 0.98;
+	mVelocity *= 0.98f;
 }
 
 void PlayerShip::Update(DX::StepTimer const& timer) {
@@ -126,28 +126,28 @@ void PlayerShip::Update(DX::StepTimer const& timer) {
 void PlayerShip::ClampPlayerShip() {
 	if (mPosition.x < -WorldWidth / 2.0)
 	{
-		mPosition.x = -WorldWidth / 2.0;
+		mPosition.x = -WorldWidth / 2.0f;
 		if (mVelocity.x < 0.0)
 			mVelocity.x = 0.0;
 	}
 
 	if (mPosition.x > WorldWidth / 2.0)
 	{
-		mPosition.x = WorldWidth / 2.0;
+		mPosition.x = WorldWidth / 2.0f;
 		if (mVelocity.x > 0.0)
 			mVelocity.x = 0.0;
 	}
 
 	if (mPosition.y < -WorldHeight / 2.0)
 	{
-		mPosition.y = -WorldHeight / 2.0;
+		mPosition.y = -WorldHeight / 2.0f;
 		if (mVelocity.y < 0.0)
 			mVelocity.y = 0.0;
 	}
 
 	if (mPosition.y > WorldHeight / 2.0)
 	{
-		mPosition.y = WorldHeight / 2.0;
+		mPosition.y = WorldHeight / 2.0f;
 		if (mVelocity.y > 0.0)
 			mVelocity.y = 0.0;
 	}

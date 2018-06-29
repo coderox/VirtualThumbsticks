@@ -32,7 +32,6 @@ namespace VirtualThumbsticksSandbox
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mBlankTexture;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mThumbstickTexture;
 
 		// Variables used with the rendering loop.
 		bool m_loadingComplete;
@@ -43,13 +42,11 @@ namespace VirtualThumbsticksSandbox
 		float mGraphicsHeightHalf;
 		int mWorldBorderThickness;
 		int mWorldBorderThicknessDoubled;
-		UINT mThumbstickTextureWidth;
-		UINT mThumbstickTextureHeight;
 
 		std::shared_ptr<PlayerShip> mPlayer;
 		//std::shared_ptr<EnemyShip> mEnemy;
 		std::shared_ptr<DirectX::SpriteBatch> mSpriteBatch;
-		std::unique_ptr<VirtualThumbsticksSandbox::VirtualThumbsticks> mThumbsticks;
+		std::unique_ptr<VirtualThumbsticksSandbox::IThumbsticks> mThumbsticks;
 		std::vector<DirectX::SimpleMath::Vector3> mStars;
 		std::vector<EnemyShip> mEnemies;
 

@@ -2,7 +2,6 @@
 #include "Sample3DSceneRenderer.h"
 
 #include "..\Common\DirectXHelper.h"
-#include "WICTextureLoader.h"
 
 using namespace VirtualThumbsticksSandbox;
 
@@ -66,18 +65,11 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	//mEnemy->LoadContent(m_deviceResources, "Assets/alien.png");
 
 	mThumbsticks = std::make_unique<VirtualThumbsticks>();
-	mThumbsticks->DisplayHeight = static_cast<int>(screenViewport.Height);
-	mThumbsticks->DisplayWidth = static_cast<int>(screenViewport.Width);
+	mThumbsticks->Initialize(m_deviceResources);
 
 	DX::ThrowIfFailed(
 		DirectX::CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/blank.png", nullptr, mBlankTexture.ReleaseAndGetAddressOf(), 0)
 		);
-
-	Microsoft::WRL::ComPtr<ID3D11Resource> res;
-	DX::ThrowIfFailed(
-		DirectX::CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Assets/thumbstick.png", res.ReleaseAndGetAddressOf(), mThumbstickTexture.ReleaseAndGetAddressOf(), 0)
-		);
-	DX::GetTextureSize(res.Get(), &mThumbstickTextureWidth, &mThumbstickTextureHeight);
 
 	mStars.clear();
 	for (int i = 0; i < mNumStars; i++) {
@@ -204,16 +196,7 @@ void Sample3DSceneRenderer::Render()
 
 	mSpriteBatch->Begin();
 
-	auto leftThumbstick = mThumbsticks->GetLeftThumbstickCenter();
-	if (leftThumbstick != Vector2::Zero) {
-		Vector2 position(leftThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f));
-		mSpriteBatch->Draw(mThumbstickTexture.Get(), position, Colors::Green);
-	}
-
-	auto rightThumbstick = mThumbsticks->GetRightThumbstickCenter();
-	if (rightThumbstick != Vector2::Zero) {
-		mSpriteBatch->Draw(mThumbstickTexture.Get(), rightThumbstick - Vector2(mThumbstickTextureWidth / 2.0f, mThumbstickTextureHeight / 2.0f), Colors::Blue);
-	}
+	mThumbsticks->Render(mSpriteBatch);
 
 	mSpriteBatch->End();
 }
