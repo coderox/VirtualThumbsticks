@@ -48,5 +48,5 @@ void Bullet::Update() {
 
 void Bullet::Draw(std::shared_ptr<SpriteBatch>& spriteBatch) {
 	spriteBatch->Draw(mBulletModel->Texture.Get(), mPosition, nullptr, mColor, mRotation,
-		Vector2(mBulletModel->TextureWidth / 2.0, mBulletModel->TextureHeight / 2.0), 1.0, SpriteEffects::SpriteEffects_None, 0.0);
+		Vector2(mBulletModel->TextureWidth / 2.0f, mBulletModel->TextureHeight / 2.0f), 1.0f, SpriteEffects::SpriteEffects_None, 0.0);
 }
