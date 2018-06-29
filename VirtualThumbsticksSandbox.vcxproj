@@ -102,6 +102,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <PackageCertificateKeyFile>VirtualThumbsticksSandbox_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>7356DF9907A1E1C7C61A40F625EEC385017554D3</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Link>
