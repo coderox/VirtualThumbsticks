@@ -60,68 +60,7 @@ void VirtualThumbsticks::Update() {
 		RightThumbstickCenter = Vector2::Zero;
 	}
 }
-/*
-void VirtualThumbsticks::Update() {
-	InputEvent* leftTouch = nullptr;
-	InputEvent* rightTouch = nullptr;
 
-	std::shared_ptr<InputEvent> e;
-	while (mInputEvents.try_pop(e)) {
-
-		if (e->GetId() == leftId) {
-			leftTouch = e.get();
-			continue;
-		}
-
-		if (e->GetId() == rightId) {
-			rightTouch = e.get();
-			continue;
-		}
-
-		if (leftId == -1) {
-			if (e->GetPosition().x < DisplayWidth / 2.0) {
-				leftTouch = e.get();
-				continue;
-			}
-		}
-
-		if (rightId == -1) {
-			if (e->GetPosition().x >= DisplayWidth / 2.0) {
-				rightTouch = e.get();
-				continue;
-			}
-		}
-	}
-
-	if (leftTouch != nullptr) {
-		if (LeftThumbstickCenter == nullptr) {
-			LeftThumbstickCenter = &(leftTouch->GetPosition());
-		}
-
-		LeftPosition = leftTouch->GetPosition();
-
-		// save the ID of the touch
-		leftId = leftTouch->GetId();
-	} else {
-		LeftThumbstickCenter = nullptr;
-		leftId = -1;
-	}
-
-	if (rightTouch != nullptr) {
-		if (RightThumbstickCenter == nullptr) {
-			RightThumbstickCenter = &(rightTouch->GetPosition());
-		}
-
-		RightPosition = rightTouch->GetPosition();
-
-		// save the ID of the touch
-		rightId = rightTouch->GetId();
-	} else {
-		RightThumbstickCenter = nullptr;
-		rightId = -1;
-	}
-}
-*/
 DirectX::SimpleMath::Vector2 VirtualThumbsticks::GetLeftThumbstick() {
 	if (LeftThumbstickCenter == Vector2::Zero)
 		return Vector2::Zero;
