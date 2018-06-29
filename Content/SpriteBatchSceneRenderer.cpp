@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "Sample3DSceneRenderer.h"
+#include "SpriteBatchSceneRenderer.h"
 
 #include "..\Common\DirectXHelper.h"
 #include "WICTextureLoader.h"
@@ -11,7 +11,7 @@ using namespace DirectX::SimpleMath;
 using namespace Windows::Foundation;
 
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
-Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources) 
+SpriteBatchSceneRenderer::SpriteBatchSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources)
 	: m_loadingComplete(false)
 	, m_deviceResources(deviceResources)
 	, mWorldBorderThickness(4)
@@ -25,7 +25,7 @@ Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceRes
 	CreateWindowSizeDependentResources();
 }
 
-Sample3DSceneRenderer::~Sample3DSceneRenderer() {
+SpriteBatchSceneRenderer::~SpriteBatchSceneRenderer() {
 	mPlayer.reset();
 	mPlayer = nullptr;
 
@@ -44,7 +44,7 @@ double Random(int min, int max) {
 }
 
 // Initializes view parameters when the window size changes.
-void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
+void SpriteBatchSceneRenderer::CreateWindowSizeDependentResources()
 {
 	Size outputSize = m_deviceResources->GetOutputSize();
 	float aspectRatio = outputSize.Width / outputSize.Height;
@@ -90,13 +90,13 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	}
 }
 
-void Sample3DSceneRenderer::ProcessInput() {
+void SpriteBatchSceneRenderer::ProcessInput() {
 	mThumbsticks->Update();
 	mPlayer->ProcessInput(mThumbsticks);
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
-void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
+void SpriteBatchSceneRenderer::Update(DX::StepTimer const& timer)
 {
 	// Loading is asynchronous. Only draw geometry after it's loaded.
 	if (!m_loadingComplete)
@@ -167,7 +167,7 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 }
 
 // Renders one frame using the vertex and pixel shaders.
-void Sample3DSceneRenderer::Render()
+void SpriteBatchSceneRenderer::Render()
 {
 	// Loading is asynchronous. Only draw geometry after it's loaded.
 	if (!m_loadingComplete)
@@ -211,7 +211,7 @@ void Sample3DSceneRenderer::Render()
 	mSpriteBatch->End();
 }
 
-void Sample3DSceneRenderer::DrawWorldBorder() {
+void SpriteBatchSceneRenderer::DrawWorldBorder() {
 	RECT r = RECT{
 		-mWorldWidth / 2 - mWorldBorderThickness,
 		-mWorldHeight / 2 - mWorldBorderThickness,
@@ -241,16 +241,16 @@ void Sample3DSceneRenderer::DrawWorldBorder() {
 	mSpriteBatch->Draw(mBlankTexture.Get(), r, Colors::Red);
 }
 
-void Sample3DSceneRenderer::CreateDeviceDependentResources()
+void SpriteBatchSceneRenderer::CreateDeviceDependentResources()
 {
 	m_loadingComplete = true;
 }
 
-void Sample3DSceneRenderer::ReleaseDeviceDependentResources()
+void SpriteBatchSceneRenderer::ReleaseDeviceDependentResources()
 {
 	m_loadingComplete = false;
 }
 
-void Sample3DSceneRenderer::QueueEvent(std::shared_ptr<InputEvent>& event) {
+void SpriteBatchSceneRenderer::QueueEvent(std::shared_ptr<InputEvent>& event) {
 	mThumbsticks->QueueEvent(event);
 }

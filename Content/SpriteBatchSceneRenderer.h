@@ -10,11 +10,11 @@
 namespace VirtualThumbsticksSandbox
 {
 	// This sample renderer instantiates a basic rendering pipeline.
-	class Sample3DSceneRenderer
+	class SpriteBatchSceneRenderer
 	{
 	public:
-		Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources);
-		~Sample3DSceneRenderer();
+		SpriteBatchSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		~SpriteBatchSceneRenderer();
 		void CreateDeviceDependentResources();
 		void CreateWindowSizeDependentResources();
 		void ReleaseDeviceDependentResources();
