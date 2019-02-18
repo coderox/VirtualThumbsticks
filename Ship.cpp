@@ -28,7 +28,7 @@ void Ship::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wst
 
 void Ship::Draw(std::shared_ptr<DirectX::SpriteBatch>& spriteBatch) {
 	spriteBatch->Draw(mTexture.Get(), mPosition, nullptr, DirectX::Colors::White, mRotation,
-		Vector2(mTextureWidth / 2.0f, mTextureHeight / 2.0f), 1.0, SpriteEffects::SpriteEffects_None, 0.0);
+		Vector2(mTextureWidth / 2.0f, mTextureHeight / 2.0f), 1.0f, SpriteEffects::SpriteEffects_None, 0.0);
 }
 
 /*********************************************************/
@@ -40,7 +40,7 @@ EnemyShip::EnemyShip() : Ship() {
 void EnemyShip::LoadContent(std::shared_ptr<DX::DeviceResources> deviceResources, wstring filename) {
 	Ship::LoadContent(deviceResources, filename);
 
-	mRadius = static_cast<float>(sqrt(mTextureWidth * mTextureWidth + mTextureHeight * mTextureHeight) * 0.75f);
+	mRadius = static_cast<float>(sqrt(mTextureWidth * mTextureWidth + mTextureHeight * mTextureHeight) * 0.75);
 }
 
 void EnemyShip::Update(DX::StepTimer const& timer) {
@@ -128,28 +128,28 @@ void PlayerShip::ClampPlayerShip() {
 	{
 		mPosition.x = -WorldWidth / 2.0f;
 		if (mVelocity.x < 0.0)
-			mVelocity.x = 0.0;
+			mVelocity.x = 0.0f;
 	}
 
 	if (mPosition.x > WorldWidth / 2.0)
 	{
 		mPosition.x = WorldWidth / 2.0f;
 		if (mVelocity.x > 0.0)
-			mVelocity.x = 0.0;
+			mVelocity.x = 0.0f;
 	}
 
 	if (mPosition.y < -WorldHeight / 2.0)
 	{
 		mPosition.y = -WorldHeight / 2.0f;
 		if (mVelocity.y < 0.0)
-			mVelocity.y = 0.0;
+			mVelocity.y = 0.0f;
 	}
 
 	if (mPosition.y > WorldHeight / 2.0)
 	{
 		mPosition.y = WorldHeight / 2.0f;
 		if (mVelocity.y > 0.0)
-			mVelocity.y = 0.0;
+			mVelocity.y = 0.0f;
 	}
 }
 

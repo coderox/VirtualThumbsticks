@@ -16,7 +16,7 @@ VirtualThumbsticksSandboxMain::VirtualThumbsticksSandboxMain(const shared_ptr<DX
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// TODO: Replace this with your app's content initialization.
-	m_sceneRenderer = make_unique<Sample3DSceneRenderer>(m_deviceResources);
+	m_sceneRenderer = make_unique<SpriteBatchSceneRenderer>(m_deviceResources);
 
 	m_fpsTextRenderer = make_unique<SampleFpsTextRenderer>(m_deviceResources);
 
