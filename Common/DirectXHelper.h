@@ -1,6 +1,9 @@
 ﻿#pragma once
 
-#include <ppltasks.h>	// For create_task
+#include <Windows.h>
+#include <winrt/Windows.Storage.h>
+#include <winrt/Windows.ApplicationModel.h>
+#include <winrt/Windows.Foundation.h>
 
 namespace DX
 {
@@ -9,28 +12,24 @@ namespace DX
 		if (FAILED(hr))
 		{
 			// Set a breakpoint on this line to catch Win32 API errors.
-			throw Platform::Exception::CreateException(hr);
+			throw winrt::hresult_error(hr);
 		}
 	}
 
 	// Function that reads from a binary file asynchronously.
-	inline Concurrency::task<std::vector<byte>> ReadDataAsync(const std::wstring& filename)
+	inline winrt::Windows::Foundation::IAsyncOperation<std::vector<byte>> ReadDataAsync(const std::wstring& filename)
 	{
-		using namespace Windows::Storage;
-		using namespace Concurrency;
+		using namespace winrt::Windows::Storage;
 
-		auto folder = Windows::ApplicationModel::Package::Current->InstalledLocation;
+		auto folder = winrt::Windows::ApplicationModel::Package::Current().InstalledLocation();
 
-		return create_task(folder->GetFileAsync(Platform::StringReference(filename.c_str()))).then([] (StorageFile^ file) 
-		{
-			return FileIO::ReadBufferAsync(file);
-		}).then([] (Streams::IBuffer^ fileBuffer) -> std::vector<byte> 
-		{
-			std::vector<byte> returnBuffer;
-			returnBuffer.resize(fileBuffer->Length);
-			Streams::DataReader::FromBuffer(fileBuffer)->ReadBytes(Platform::ArrayReference<byte>(returnBuffer.data(), fileBuffer->Length));
-			return returnBuffer;
-		});
+		auto file = co_await folder.GetFileAsync(winrt::hstring(filename.c_str()));
+		auto fileBuffer = co_await FileIO::ReadBufferAsync(file);
+
+		std::vector<uint8_t> returnBuffer;
+		returnBuffer.resize(fileBuffer.Length());
+		Streams::DataReader::FromBuffer(fileBuffer).ReadBytes(winrt::array_view<uint8_t>(returnBuffer));
+		co_return returnBuffer;		
 	}
 
 	// Converts a length in device-independent pixels (DIPs) to a length in physical pixels.

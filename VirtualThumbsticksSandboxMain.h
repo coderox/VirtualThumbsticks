@@ -37,7 +37,7 @@ namespace VirtualThumbsticksSandbox
 		std::unique_ptr<SpriteBatchSceneRenderer> m_sceneRenderer;
 		std::unique_ptr<SampleFpsTextRenderer> m_fpsTextRenderer;
 
-		Windows::Foundation::IAsyncAction^ m_renderLoopWorker;
+		winrt::Windows::Foundation::IAsyncAction m_renderLoopWorker;
 		Concurrency::critical_section m_criticalSection;
 
 		// Rendering loop timer.

@@ -71,6 +71,8 @@
     <ClCompile Include="Content\SpriteBatchSceneRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="DirectXPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.xaml.h" />
@@ -92,6 +94,8 @@
     <ClInclude Include="Content\SpriteBatchSceneRenderer.h">
       <Filter>Content</Filter>
     </ClInclude>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="DirectXPage.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\StoreLogo.png">
@@ -122,5 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="DirectXPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+    <Midl Include="DirectXPage.idl" />
   </ItemGroup>
 </Project>

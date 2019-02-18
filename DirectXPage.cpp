@@ -4,24 +4,24 @@
 //
 
 #include "pch.h"
-#include "DirectXPage.xaml.h"
+#include "DirectXPage.h"
 
 using namespace VirtualThumbsticksSandbox;
 
-using namespace Platform;
-using namespace Windows::Foundation;
-using namespace Windows::Foundation::Collections;
-using namespace Windows::Graphics::Display;
-using namespace Windows::System::Threading;
-using namespace Windows::UI::Core;
-using namespace Windows::UI::Input;
-using namespace Windows::UI::Xaml;
-using namespace Windows::UI::Xaml::Controls;
-using namespace Windows::UI::Xaml::Controls::Primitives;
-using namespace Windows::UI::Xaml::Data;
-using namespace Windows::UI::Xaml::Input;
-using namespace Windows::UI::Xaml::Media;
-using namespace Windows::UI::Xaml::Navigation;
+using namespace winrt;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::Foundation::Collections;
+using namespace winrt::Windows::Graphics::Display;
+using namespace winrt::Windows::System::Threading;
+using namespace winrt::Windows::UI::Core;
+using namespace winrt::Windows::UI::Input;
+using namespace winrt::Windows::UI::Xaml;
+using namespace winrt::Windows::UI::Xaml::Controls;
+using namespace winrt::Windows::UI::Xaml::Controls::Primitives;
+using namespace winrt::Windows::UI::Xaml::Data;
+using namespace winrt::Windows::UI::Xaml::Input;
+using namespace winrt::Windows::UI::Xaml::Media;
+using namespace winrt::Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
 DirectXPage::DirectXPage():

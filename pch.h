@@ -14,10 +14,7 @@
 #include <DirectXColors.h>
 #include <DirectXMath.h>
 #include <memory>
-#include <agile.h>
-#include <concrt.h>
-#include <collection.h>
-#include "App.xaml.h"
+#include "App.h"
 
 #include <SpriteBatch.h>
 #include <SimpleMath.h>
@@ -26,3 +23,9 @@
 #include "Ship.h"
 #include "Bullet.h"
 #include "VirtualThumbsticks.h"
+
+#include <windows.h>
+#include <winrt/base.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.UI.Xaml.h>
+#include <winrt/Windows.Graphics.Display.h>
